@@ -12,7 +12,7 @@ RUN make install-frontend
 COPY web/ web/
 RUN make build-frontend
 
-FROM registry.redhat.io/ubi9/go-toolset:1.24 AS go-builder
+FROM registry.access.redhat.io/ubi9/go-toolset:1.24 AS go-builder
 
 WORKDIR /opt/app-root
 
@@ -30,7 +30,7 @@ ENV CGO_ENABLED=1
 
 RUN make build-backend BUILD_OPTS="-tags strictfipsruntime"
 
-FROM registry.redhat.io/ubi9/ubi:9.4
+FROM registry.access.redhat.io/ubi9/ubi:9.4
 
 USER 1001
 
