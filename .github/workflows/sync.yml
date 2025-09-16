@@ -1,0 +1,29 @@
+name: Sync fork main with upstream
+on:
+  schedule:
+    - cron: '17 2 * * *'   # daily at 02:17 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Add upstream
+        run: |
+          git remote add upstream https://github.com/openshift/monitoring-plugin.git
+          git fetch upstream
+      - name: Fast-forward master
+        run: |
+          git checkout main
+          git merge --ff-only upstream/main || true
+      - name: Push if changed
+        run: |
+          if ! git diff --quiet origin/main...main; then
+            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/svenosenga/monitoring-plugin.git main
