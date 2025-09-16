@@ -1,5 +1,4 @@
 FROM registry.access.redhat.com/ubi9/nodejs-18:9.6-1749709214 AS web-builder
- AS builder
 WORKDIR /opt/app-root
 
 USER 0
