@@ -44,13 +44,6 @@ jobs:
       with:
         images: ${{ env.REGISTRY }}/${{ env.OWNER }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}
 
-    - name: Configure Docker auth (Red Hat pull secret)
-      run: |
-        mkdir -p ~/.docker
-        # Use printf to avoid newline issues on some runners
-        printf '%s' "${{ secrets.REDHAT_PULL_SECRET }}" > ~/.docker/config.json
-        chmod 600 ~/.docker/config.json
-
     - name: Build and push Ubuntu based Docker image
       uses: docker/build-push-action@v5
       with:
